@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 
 import NewTicketForm from './NewTicketForm';
 import TicketList from './TicketList';
@@ -46,7 +47,7 @@ class TicketControl extends React.Component {
   }
 
   changeSelectedTicket = (id) => {
-    const ticket = this.state.masterTicketList.find(ticket => ticket.id === id);
+    const ticket = this.props.masterTicketList[id];
     this.setState({selectedTicket: ticket});
   }
 
@@ -60,34 +61,40 @@ class TicketControl extends React.Component {
     this.setState({selectedTicket: null});
   }
 
-  //   const newMasterTicketList = this.state.masterTicketList.filter(ticket => ticket.id !== id);
-  //   this.setState({
-  //     masterTicketList: newMasterTicketList,
-  //     selectedTicket: null
-  //   });
-  // }
-
   handleEditClick = () => {
     this.setState({editing: true});
   }
 
   editTicket = (ticket) => {
-    const { masterTicketList, selectedTicket} = this.state;
-
-    const newTicketList = masterTicketList.filter(ticket => ticket.id !== selectedTicket.id);
-
+    const { dispatch } = this.props;
+    const { id, names, location, issue } = ticket;
+    const action = {
+      type: 'ADD_TICKET',
+      id, names, location, issue
+    }
+    dispatch(action);
     this.setState({
-      masterTicketList: [...newTicketList, ticket],
       editing: false,
       selectedTicket: null
     });
   }
 
+    // const selectedTicket = this.props.masterTicketList[id];
+    // // const newTicketList = masterTicketList.filter(ticket => ticket.id !== selectedTicket.id);
+
+    // this.setState({
+    //   masterTicketList: [...newTicketList, ticket],
+    //   editing: false,
+    //   selectedTicket: null
+    // });
+  
+
   render(){
     let viewState = null;
     let buttonText = null;
 
-    const { formShowing, masterTicketList, selectedTicket, editing } = this.state;
+    const { formShowing, selectedTicket, editing } = this.state;
+    const { masterTicketList } = this.props;
 
     if (editing) {      
       viewState = <EditTicketForm ticket = {selectedTicket} 
@@ -114,6 +121,10 @@ class TicketControl extends React.Component {
       </React.Fragment>
     );
   }
+}
+
+TicketControl.propTypes = {
+  masterTicketList: PropTypes.object
 }
 
 const mapStateToProps = state => {
