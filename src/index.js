@@ -4,8 +4,8 @@ import './index.css';
 import App from './components/App';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import reducer from './reducers/ticket-list-reducer';
+import rootReducer from './reducers/index';
 
 ReactDOM.render(
-  <Provider store={createStore(reducer)}><App /></Provider>,
+  <Provider store={createStore(rootReducer)}><App /></Provider>,
 document.getElementById('root'));
