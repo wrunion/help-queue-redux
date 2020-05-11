@@ -8,13 +8,16 @@ function ReusableForm(props) {
         <div><label>Names: <input
           type='text'
           name='names'
+          defaultValue='Jack and Jill'
           placeholder='Pair Names' /></label></div>
           <div><label>Location: <input
           type='text'
           name='location'
+          defaultValue='3a'
           placeholder='Location' /></label></div>
           <div><lable>Issue: <input
           name='issue'
+          defaultValue='Help us!!!'
           placeholder='Describe your issue.' /></lable></div>
           <button type='submit'>
 {props.buttonText}</button>

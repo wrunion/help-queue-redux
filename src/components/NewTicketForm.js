@@ -5,22 +5,22 @@ import ReusableForm from "./ReusableForm";
 
 function NewTicketForm(props){
 
-  function handleNewTicketFormSubmission(event) {
+  function handleNewTicketSubmit(event) {
     event.preventDefault();
-    props.onNewTicketCreation({names: event.target.names.value, location: event.target.location.value, issue: event.target.issue.value, id: v4()});
+    props.createTicket({names: event.target.names.value, location: event.target.location.value, issue: event.target.issue.value, id: v4()});
   }
 
   return (
     <React.Fragment>
       <ReusableForm 
-        formSubmissionHandler={handleNewTicketFormSubmission}
+        formSubmissionHandler={handleNewTicketSubmit}
         buttonText="Help!" />
     </React.Fragment>
   );
 }
 
 NewTicketForm.propTypes = {
-  onNewTicketCreation: PropTypes.func
+  createTicket: PropTypes.func
 };
 
 export default NewTicketForm;

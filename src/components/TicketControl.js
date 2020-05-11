@@ -30,7 +30,7 @@ class TicketControl extends React.Component {
     }
   }
 
-  handleAddingNewTicketToList = (newTicket) => {
+  createTicket = (newTicket) => {
     const newMasterTicketList = this.state.masterTicketList.concat(newTicket);
     this.setState({
       masterTicketList: newMasterTicketList,
@@ -72,6 +72,7 @@ class TicketControl extends React.Component {
     if (this.state.editing ) {      
       currentlyVisibleState = <EditTicketForm ticket = {this.state.selectedTicket} onEditTicket = {this.handleEditingTicketInList} />
       buttonText = "Return to Ticket List";
+
     } else if (this.state.selectedTicket != null) {
       currentlyVisibleState = 
       <TicketDetail 
@@ -79,9 +80,11 @@ class TicketControl extends React.Component {
         onClickingDelete = {this.handleDeletingTicket} 
         onClickingEdit = {this.handleEditClick} />
       buttonText = "Return to Ticket List";
+
     } else if (this.state.formVisibleOnPage) {
-      currentlyVisibleState = <NewTicketForm onNewTicketCreation={this.handleAddingNewTicketToList}  />;
+      currentlyVisibleState = <NewTicketForm createTicket={this.createTicket}  />;
       buttonText = "Return to Ticket List";
+      
     } else {
       currentlyVisibleState = <TicketList ticketList={this.state.masterTicketList} onTicketSelection={this.handleChangingSelectedTicket} />;
       buttonText = "Add Ticket";
