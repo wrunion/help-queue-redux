@@ -57,39 +57,42 @@ class TicketControl extends React.Component {
   editTicket = (ticket) => {
     const { masterTicketList, selectedTicket} = this.state;
 
+    const newTicketList = masterTicketList.filter(ticket => ticket.id !== selectedTicket.id);
+
     this.setState({
-      masterTicketList: masterTicketList.filter(ticket => ticket.id !== selectedTicket.id),
+      masterTicketList: [...newTicketList, ticket],
       editing: false,
       selectedTicket: null
     });
   }
 
   render(){
-    let currentlyVisibleState = null;
+    let viewState = null;
     let buttonText = null;
-    if (this.state.editing ) {      
-      currentlyVisibleState = <EditTicketForm ticket = {this.state.selectedTicket} onEditTicket = {this.editTicket} />
-      buttonText = "Return to Ticket List";
 
-    } else if (this.state.selectedTicket != null) {
-      currentlyVisibleState = 
-      <TicketDetail 
-        ticket = {this.state.selectedTicket} 
+    const { formShowing, masterTicketList, selectedTicket, editing } = this.state;
+
+    if (editing) {      
+      viewState = <EditTicketForm ticket = {selectedTicket} 
+          onEditTicket = {this.editTicket} />
+      buttonText = "Return to Ticket List";
+    }  
+    else if (selectedTicket != null) {
+      viewState = <TicketDetail ticket = {selectedTicket} 
         onClickingDelete = {this.handleDeleteClick} 
         onClickingEdit = {this.handleEditClick} />
       buttonText = "Return to Ticket List";
-
-    } else if (this.state.formShowing) {
-      currentlyVisibleState = <NewTicketForm createTicket={this.createTicket}  />;
+    }
+    else if (formShowing) {
+      viewState = <NewTicketForm createTicket={this.createTicket}  />;
       buttonText = "Return to Ticket List";
-      
     } else {
-      currentlyVisibleState = <TicketList ticketList={this.state.masterTicketList} onTicketSelection={this.changeSelectedTicket} />;
+      viewState = <TicketList ticketList={masterTicketList} onTicketSelection={this.changeSelectedTicket} />;
       buttonText = "Add Ticket";
     }
     return (
       <React.Fragment>
-        {currentlyVisibleState}
+        {viewState}
         <button onClick={this.handleClick}>{buttonText}</button>
       </React.Fragment>
     );
