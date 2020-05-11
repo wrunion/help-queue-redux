@@ -1,4 +1,6 @@
 import React from 'react';
+import {connect} from 'react-redux';
+
 import NewTicketForm from './NewTicketForm';
 import TicketList from './TicketList';
 import TicketDetail from './TicketDetail';
@@ -10,7 +12,6 @@ class TicketControl extends React.Component {
     super(props);
     this.state = {
       formShowing: false,
-      masterTicketList: [],
       selectedTicket: null,
       editing: false
     };
@@ -31,8 +32,15 @@ class TicketControl extends React.Component {
   }
 
   createTicket = (newTicket) => {
+    const { dispatch } = this.props;
+    const { id, names, location, issue } = newTicket;
+    const action = {
+      type: 'ADD_TICKET',
+      id, names, location, issue
+    }
+    dispatch(action);
     this.setState({
-      masterTicketList: [...this.state.masterTicketList, newTicket],
+      // masterTicketList: [...this.state.masterTicketList, newTicket],
       formShowing: false
     });
   }
@@ -97,7 +105,6 @@ class TicketControl extends React.Component {
       </React.Fragment>
     );
   }
-
 }
 
-export default TicketControl;
+export default connect()(TicketControl);
