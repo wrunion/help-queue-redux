@@ -38,9 +38,9 @@ class TicketControl extends React.Component {
       type: 'ADD_TICKET',
       id, names, location, issue
     }
+
     dispatch(action);
     this.setState({
-      // masterTicketList: [...this.state.masterTicketList, newTicket],
       formShowing: false
     });
   }
@@ -51,12 +51,21 @@ class TicketControl extends React.Component {
   }
 
   handleDeleteClick = (id) => {
-    const newMasterTicketList = this.state.masterTicketList.filter(ticket => ticket.id !== id);
-    this.setState({
-      masterTicketList: newMasterTicketList,
-      selectedTicket: null
-    });
+    const { dispatch } = this.props;
+    const action = {
+      type: 'DELETE_TICKET',
+      id: id
+    }
+    dispatch(action);
+    this.setState({selectedTicket: null});
   }
+
+  //   const newMasterTicketList = this.state.masterTicketList.filter(ticket => ticket.id !== id);
+  //   this.setState({
+  //     masterTicketList: newMasterTicketList,
+  //     selectedTicket: null
+  //   });
+  // }
 
   handleEditClick = () => {
     this.setState({editing: true});
@@ -107,4 +116,10 @@ class TicketControl extends React.Component {
   }
 }
 
-export default connect()(TicketControl);
+const mapStateToProps = state => {
+  return {
+    masterTicketList: state
+  }
+}
+
+export default connect(mapStateToProps)(TicketControl);
