@@ -37,12 +37,12 @@ class TicketControl extends React.Component {
     });
   }
 
-  handleChangingSelectedTicket = (id) => {
-    const selectedTicket = this.state.masterTicketList.filter(ticket => ticket.id === id)[0];
-    this.setState({selectedTicket: selectedTicket});
+  changeSelectedTicket = (id) => {
+    const ticket = this.state.masterTicketList.find(ticket => ticket.id === id);
+    this.setState({selectedTicket: ticket});
   }
 
-  handleDeletingTicket = (id) => {
+  handleDeleteClick = (id) => {
     const newMasterTicketList = this.state.masterTicketList.filter(ticket => ticket.id !== id);
     this.setState({
       masterTicketList: newMasterTicketList,
@@ -54,12 +54,11 @@ class TicketControl extends React.Component {
     this.setState({editing: true});
   }
 
-  handleEditingTicketInList = (ticketToEdit) => {
-    const editedMasterTicketList = this.state.masterTicketList
-      .filter(ticket => ticket.id !== this.state.selectedTicket.id)
-      .concat(ticketToEdit);
+  editTicket = (ticket) => {
+    const { masterTicketList, selectedTicket} = this.state;
+
     this.setState({
-      masterTicketList: editedMasterTicketList,
+      masterTicketList: masterTicketList.filter(ticket => ticket.id !== selectedTicket.id),
       editing: false,
       selectedTicket: null
     });
@@ -69,14 +68,14 @@ class TicketControl extends React.Component {
     let currentlyVisibleState = null;
     let buttonText = null;
     if (this.state.editing ) {      
-      currentlyVisibleState = <EditTicketForm ticket = {this.state.selectedTicket} onEditTicket = {this.handleEditingTicketInList} />
+      currentlyVisibleState = <EditTicketForm ticket = {this.state.selectedTicket} onEditTicket = {this.editTicket} />
       buttonText = "Return to Ticket List";
 
     } else if (this.state.selectedTicket != null) {
       currentlyVisibleState = 
       <TicketDetail 
         ticket = {this.state.selectedTicket} 
-        onClickingDelete = {this.handleDeletingTicket} 
+        onClickingDelete = {this.handleDeleteClick} 
         onClickingEdit = {this.handleEditClick} />
       buttonText = "Return to Ticket List";
 
@@ -85,7 +84,7 @@ class TicketControl extends React.Component {
       buttonText = "Return to Ticket List";
       
     } else {
-      currentlyVisibleState = <TicketList ticketList={this.state.masterTicketList} onTicketSelection={this.handleChangingSelectedTicket} />;
+      currentlyVisibleState = <TicketList ticketList={this.state.masterTicketList} onTicketSelection={this.changeSelectedTicket} />;
       buttonText = "Add Ticket";
     }
     return (
