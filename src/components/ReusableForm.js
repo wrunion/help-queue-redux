@@ -15,10 +15,10 @@ function ReusableForm(props) {
           name='location'
           defaultValue='3a'
           placeholder='Location' /></label></div>
-          <div><lable>Issue: <input
+          <div><label>Issue: <input
           name='issue'
           defaultValue='Help us!!!'
-          placeholder='Describe your issue.' /></lable></div>
+          placeholder='Describe your issue.' /></label></div>
           <button type='submit'>
 {props.buttonText}</button>
       </form>

@@ -9,7 +9,7 @@ class TicketControl extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      formVisibleOnPage: false,
+      formShowing: false,
       masterTicketList: [],
       selectedTicket: null,
       editing: false
@@ -19,22 +19,21 @@ class TicketControl extends React.Component {
   handleClick = () => {
     if (this.state.selectedTicket != null) {
       this.setState({
-        formVisibleOnPage: false,
+        formShowing: false,
         selectedTicket: null,
         editing: false
       });
     } else {
       this.setState(prevState => ({
-        formVisibleOnPage: !prevState.formVisibleOnPage,
+        formShowing: !prevState.formShowing,
       }));
     }
   }
 
   createTicket = (newTicket) => {
-    const newMasterTicketList = this.state.masterTicketList.concat(newTicket);
     this.setState({
-      masterTicketList: newMasterTicketList,
-      formVisibleOnPage: false
+      masterTicketList: [...this.state.masterTicketList, newTicket],
+      formShowing: false
     });
   }
 
@@ -81,7 +80,7 @@ class TicketControl extends React.Component {
         onClickingEdit = {this.handleEditClick} />
       buttonText = "Return to Ticket List";
 
-    } else if (this.state.formVisibleOnPage) {
+    } else if (this.state.formShowing) {
       currentlyVisibleState = <NewTicketForm createTicket={this.createTicket}  />;
       buttonText = "Return to Ticket List";
       
